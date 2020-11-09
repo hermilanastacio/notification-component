@@ -22,7 +22,6 @@ function App() {
           callback: null
         }
       )
-      setDesc("");
     }
   }
 

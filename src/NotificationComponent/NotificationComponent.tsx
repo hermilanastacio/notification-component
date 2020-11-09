@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
-import { RingerSolidIcon } from '@fluentui/react-icons';
+import { RingerSolidIcon, MoreIcon } from '@fluentui/react-icons';
 import { Callout, mergeStyleSets, DirectionalHint } from 'office-ui-fabric-react';
 import { useStore } from '../common/stores';
 import { useBoolean } from '@uifabric/react-hooks';
 import { observer } from 'mobx-react';
+import moment from 'moment';
 
 const styles = mergeStyleSets({
   buttonArea: {
@@ -16,6 +18,7 @@ const styles = mergeStyleSets({
   },
   callout: {
     maxWidth: 300,
+    padding: 15
   },
 });
 
@@ -26,9 +29,9 @@ const NotificationComponent: React.FC = () => {
   return(
     <div style={{position:"relative"}}>
       <div style={{position:"relative", cursor:"pointer"}} onClick={toggleIsCalloutVisible}>
-        <div style={{backgroundColor:"red", position:"absolute", top:-5, right:-10, fontSize:12, fontWeight:"bold", width: 18, height:18, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+        <span style={{backgroundColor:"red", position:"absolute", top:-11, right:-11, fontSize: 11, fontWeight:"bold", boxSizing:"content-box", width:"2em", height:"2em", lineHeight:"2em",  borderRadius:"50%", textAlign: "center"}}>
           {notificationStore.notifications.length}
-        </div>
+        </span>
         <RingerSolidIcon style={{fontSize:25}} className="bellBtn"/>
       </div>
       <React.Fragment>
@@ -42,8 +45,22 @@ const NotificationComponent: React.FC = () => {
             // onDismiss={toggleIsCalloutVisible}
             setInitialFocus
           >
+            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+              <span>
+                Notifications
+              </span>
+            <MoreIcon/>
+            </div>
             {notificationStore.notifications.map(n => 
-              <p>{n.description}</p>
+              <div key={n.id} style={{display:"flex", alignItems:"center", margin:"15px 0"}}>
+                <img src={n.iconUrl} alt="icon" style={{height:50, width:50}}/>
+                <div style={{margin:"0 10px 0 5px"}}>
+                  <span>{n.description}</span>
+                  <br/>
+                  <span>{moment(n.date).fromNow()}</span>
+                </div>
+                <MoreIcon/>
+              </div>
             )}
           </Callout>
         )}
