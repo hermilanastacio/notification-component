@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { RingerSolidIcon } from '@fluentui/react-icons';
 import { Callout, mergeStyleSets, DirectionalHint } from 'office-ui-fabric-react';
+import { useStore } from '../common/stores';
 import { useBoolean } from '@uifabric/react-hooks';
+import { observer } from 'mobx-react';
 
 const styles = mergeStyleSets({
   buttonArea: {
@@ -18,12 +20,15 @@ const styles = mergeStyleSets({
 });
 
 const NotificationComponent: React.FC = () => {
-  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false);
+  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(true);
+  const { notificationStore } = useStore();
 
   return(
     <div style={{position:"relative"}}>
       <div style={{position:"relative", cursor:"pointer"}} onClick={toggleIsCalloutVisible}>
-        <div style={{backgroundColor:"red", position:"absolute", top:-5, right:-10, fontSize:12, fontWeight:"bold", width: 18, height:18, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>3</div>
+        <div style={{backgroundColor:"red", position:"absolute", top:-5, right:-10, fontSize:12, fontWeight:"bold", width: 18, height:18, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+          {notificationStore.notifications.length}
+        </div>
         <RingerSolidIcon style={{fontSize:25}} className="bellBtn"/>
       </div>
       <React.Fragment>
@@ -34,10 +39,12 @@ const NotificationComponent: React.FC = () => {
             gapSpace={0}
             target={'.bellBtn'}
             directionalHint={DirectionalHint.bottomCenter}
-            onDismiss={toggleIsCalloutVisible}
+            // onDismiss={toggleIsCalloutVisible}
             setInitialFocus
           >
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro itaque dolore nisi deserunt minus similique aliquam consequuntur minima nulla id error nam cum sunt delectus fugiat, accusantium eos magnam non?</p>
+            {notificationStore.notifications.map(n => 
+              <p>{n.description}</p>
+            )}
           </Callout>
         )}
       </React.Fragment>
@@ -45,4 +52,4 @@ const NotificationComponent: React.FC = () => {
   );
 };
 
-export default NotificationComponent;
+export default observer(NotificationComponent);
