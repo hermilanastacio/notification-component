@@ -17,7 +17,7 @@ export class NotificationStore {
   public notifications: Array<INotification> = [
     {
       id: "e355aacc-9cd1-4059-a351-3b67c7f75066",
-      description: "Hermil Anastacio.",
+      description: "Hermil Anastacio mentioned you in a comment.",
       iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
       icon: null,
       date: "2020-11-09T03:27:16.321",

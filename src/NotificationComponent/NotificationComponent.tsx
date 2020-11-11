@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import { RingerSolidIcon, MoreIcon } from '@fluentui/react-icons';
-import { Callout, mergeStyleSets, DirectionalHint } from 'office-ui-fabric-react';
+import { Callout, mergeStyleSets, DirectionalHint, Separator } from 'office-ui-fabric-react';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import styles from './NotificationComponent.module.scss';
 import { useBoolean } from '@uifabric/react-hooks';
@@ -49,20 +49,44 @@ const NotificationComponent: React.FC = () => {
 
             <Pivot className={styles.tabbedContentWrapper}>
               <PivotItem headerText="All">
-                {notificationStore.notifications.map(notif => 
-                  <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
-                    <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                    <div className={styles.notifDetailsWrapper}>
-                      <p className={styles.descText}>
-                        {notif.description}
-                      </p>
-                      <span className={styles.dateText}>
-                        {moment(notif.date).fromNow()}
-                      </span>
+                <Separator alignContent="start" style={{fontWeight:"bold"}}>
+                  <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
+                    New
+                  </span>
+                </Separator>
+                  {notificationStore.notifications.map(notif => 
+                    <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
+                      <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                      <div className={styles.notifDetailsWrapper}>
+                        <p className={styles.descText}>
+                          {notif.description}
+                        </p>
+                        <span className={styles.dateText}>
+                          {moment(notif.date).fromNow()}
+                        </span>
+                      </div>
+                      <MoreIcon className={styles.moreIcon}/>
                     </div>
-                    <MoreIcon className={styles.moreIcon}/>
-                  </div>
-                )}
+                  )}
+                <Separator alignContent="start" style={{fontWeight:"bold"}}>
+                  <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
+                    Earlier
+                  </span>
+                </Separator>
+                  {notificationStore.notifications.map(notif => 
+                    <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
+                      <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                      <div className={styles.notifDetailsWrapper}>
+                        <p className={styles.descText}>
+                          {notif.description}
+                        </p>
+                        <span className={styles.dateText}>
+                          {moment(notif.date).fromNow()}
+                        </span>
+                      </div>
+                      <MoreIcon className={styles.moreIcon}/>
+                    </div>
+                  )}
               </PivotItem>
               <PivotItem headerText="Unread">
                 {notificationStore.notifications.map(notif => {
