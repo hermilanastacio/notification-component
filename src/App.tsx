@@ -17,7 +17,7 @@ function App() {
           iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
           icon: null,
           date: new Date().toISOString(),
-          read: false,
+          isRead: false,
           state: null,
           callback: null
         }

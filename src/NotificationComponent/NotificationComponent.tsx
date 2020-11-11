@@ -17,8 +17,7 @@ const styles = mergeStyleSets({
     height: 32,
   },
   callout: {
-    maxWidth: 300,
-    padding: 15
+    maxWidth: 300
   },
 });
 
@@ -42,22 +41,21 @@ const NotificationComponent: React.FC = () => {
             gapSpace={0}
             target={'.bellBtn'}
             directionalHint={DirectionalHint.bottomCenter}
-            // onDismiss={toggleIsCalloutVisible}
+            directionalHintFixed
             setInitialFocus
           >
-            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
-              <span>
+            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", margin: "15px 15px"}}>
+              <span style={{fontSize:15, fontWeight:"bold"}}>
                 Notifications
               </span>
             <MoreIcon/>
             </div>
             {notificationStore.notifications.map(n => 
-              <div key={n.id} style={{display:"flex", alignItems:"center", margin:"15px 0"}}>
+              <div key={n.id} style={{display:"flex", alignItems:"center", margin:"5px 10px", padding:8, borderRadius:5, backgroundColor: !n.isRead ? "#f4f4f4" : ""}}>
                 <img src={n.iconUrl} alt="icon" style={{height:50, width:50}}/>
                 <div style={{margin:"0 10px 0 5px"}}>
-                  <span>{n.description}</span>
-                  <br/>
-                  <span>{moment(n.date).fromNow()}</span>
+                  <p style={{margin:"0 0 2px 0"}}>{n.description}</p>
+                  <span style={{fontWeight: 600, fontSize:13}}>{moment(n.date).fromNow()}</span>
                 </div>
                 <MoreIcon/>
               </div>
