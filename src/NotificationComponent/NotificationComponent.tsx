@@ -11,7 +11,7 @@ import moment from 'moment';
 
 const classes = mergeStyleSets({
   callout: {
-    width: 320
+    maxWidth: 360
   }
 });
 
