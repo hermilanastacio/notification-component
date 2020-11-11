@@ -21,7 +21,7 @@ export class NotificationStore {
       iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
       icon: null,
       date: "2020-11-09T03:27:16.321",
-      isRead: true,
+      isRead: false,
       state: null,
       callback: null
     },
@@ -31,7 +31,7 @@ export class NotificationStore {
       iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
       icon: null,
       date: "2020-11-09T03:27:16.321",
-      isRead: false,
+      isRead: true,
       state: null,
       callback: null
     },
@@ -41,7 +41,7 @@ export class NotificationStore {
       iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
       icon: null,
       date: "2020-11-09T03:27:16.321",
-      isRead: true,
+      isRead: false,
       state: null,
       callback: null
     },
