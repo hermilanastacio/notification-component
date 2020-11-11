@@ -1,4 +1,77 @@
-.iconWrapper {
+.container {
+  position: relative;
+
+  .bellWrapper {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .badge {
+    background-color: red;
+    position: absolute;
+    top: -11px;
+    right: -11px;
+    font-size: 11px;
+    font-weight: bold;
+    box-sizing: content-box;
+    width: 2em;
+    height: 2em;
+    line-height: 2em;
+    border-radius: 50%;
+    text-align: center;
+  }
+}
+
+.callOutHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 15px 0px 15px;
+
+  .notifLabel {
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
+
+.tabbedContentWrapper {
+  padding: 0 10px 5px 10px;
+
+  .notificationCard {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .unRead {
+    background-color: #f4f4f4;
+  }
+  .iconImg {
+    height: 50px;
+    width: 50px;
+  }
+
+  .notifDetailsWrapper {
+    margin: 0 10px 0 5px;
+    flex-grow: 1;
+
+    .descText {
+      margin: 0 0 2px 0;
+    }
+    .dateText {
+      font-weight: 600;
+      font-size: 13px;
+    }
+  }
+}
+
+.moreIcon {
+  padding: 5px;
+  font-size: 18px;
+  border-radius: 50%;
+
   &:hover {
     background-color: #bebebe;
   }
