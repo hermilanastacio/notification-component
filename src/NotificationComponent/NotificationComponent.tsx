@@ -6,6 +6,7 @@ import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import { useBoolean } from '@uifabric/react-hooks';
 import { useStore } from '../common/stores';
 import { observer } from 'mobx-react';
+import classes from './NotificationComponent.module.scss';
 import moment from 'moment';
 
 const styles = mergeStyleSets({
@@ -49,7 +50,9 @@ const NotificationComponent: React.FC = () => {
               <span style={{fontSize:15, fontWeight:"bold"}}>
                 Notifications
               </span>
-            <MoreIcon/>
+              <div className={classes.iconWrapper} style={{width:30, height:30, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+                <MoreIcon style={{fontSize: 18}}/>
+              </div>
             </div>
 
             <Pivot style={{padding:"0 10px 5px 10px"}}>
