@@ -59,6 +59,11 @@
 
     .descText {
       margin: 0 0 2px 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
     }
     .dateText {
       font-weight: 600;
