@@ -47,6 +47,11 @@ const NotificationComponent: React.FC = () => {
     setShowItemMore(false);
   }
 
+  const handleUnreadNotification = (id: string) => {
+    notificationStore.unreadNotification(id);
+    setShowItemMore(false);
+  }
+
   const hasUnreadNotification = () => {
     if(unreadNotifCount > 0) {
       return true
@@ -190,15 +195,26 @@ const NotificationComponent: React.FC = () => {
                     directionalHintFixed
                     setInitialFocus
                   >
-                    <span 
-                      onClick={() => handleReadNotification(
-                        notificationStore.selectedNotification.id
-                      )}
-                      className={styles.moreItem}
-                    >
-                      <AcceptIcon className={styles.moreItemIcon}/>
-                      Mark as read
-                    </span>
+                    {notificationStore.selectedNotification.isRead
+                      ? <span 
+                          onClick={() => handleUnreadNotification(
+                            notificationStore.selectedNotification.id
+                          )}
+                          className={styles.moreItem}
+                        >
+                          <AcceptIcon className={styles.moreItemIcon}/>
+                          Mark as unread
+                        </span>
+                      : <span 
+                          onClick={() => handleReadNotification(
+                            notificationStore.selectedNotification.id
+                          )}
+                          className={styles.moreItem}
+                        >
+                          <AcceptIcon className={styles.moreItemIcon}/>
+                          Mark as read
+                        </span>
+                    }
                     <span 
                       onClick={handleRemoveNotification}
                       className={styles.moreItem}

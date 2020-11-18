@@ -94,4 +94,10 @@ export class NotificationStore {
     let readNotif = this.notifications.filter(n => n.id === id)[0];
     readNotif.isRead = true;
   }
+
+  @action
+  public unreadNotification(id: string) {
+    let readNotif = this.notifications.filter(n => n.id === id)[0];
+    readNotif.isRead = false;
+  }
 }
