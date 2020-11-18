@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
-import { RingerSolidIcon, MoreIcon } from '@fluentui/react-icons';
+import { useState } from 'react';
+import { RingerSolidIcon, MoreIcon, AcceptIcon, RemoveFilterIcon } from '@fluentui/react-icons';
 import { Callout, mergeStyleSets, DirectionalHint, Separator } from 'office-ui-fabric-react';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
+import { INotification } from '../interfaces/INotification';
 import styles from './NotificationComponent.module.scss';
 import { useBoolean } from '@uifabric/react-hooks';
 import { useStore } from '../common/stores';
@@ -17,7 +19,13 @@ const classes = mergeStyleSets({
 
 const NotificationComponent: React.FC = () => {
   const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(true);
+  const [showMore, setShowMore] = useState(false);
   const { notificationStore } = useStore();
+
+  const handleClickMore = (notif: INotification) => {
+    notificationStore.setSelectedNotification(notif);
+    setShowMore(true);
+  }
 
   return(
     <div className={styles.container}>
@@ -33,6 +41,7 @@ const NotificationComponent: React.FC = () => {
         {isCalloutVisible && (
           <Callout
             className={classes.callout}
+            onDismiss={toggleIsCalloutVisible}
             role="alertdialog"
             gapSpace={0}
             target={'.bellBtn'}
@@ -65,9 +74,38 @@ const NotificationComponent: React.FC = () => {
                           {moment(notif.date).fromNow()}
                         </span>
                       </div>
-                      <MoreIcon className={styles.moreIcon}/>
+                      <MoreIcon className={`item-${notif.id}`} onClick={() => handleClickMore(notif)}/>
                     </div>
                   )}
+
+                {showMore
+                  ? <Callout
+                      className={classes.callout}
+                      onDismiss={() => setShowMore(false)}
+                      role="alertdialog"
+                      gapSpace={0}
+                      target={`.item-${notificationStore.selectedNotification 
+                        && notificationStore.selectedNotification.id}`}
+                      directionalHint={DirectionalHint.leftCenter}
+                      directionalHintFixed
+                      setInitialFocus
+                    >
+                      <span className={styles.moreItem}>
+                        <AcceptIcon className={styles.moreItemIcon}/>
+                        Mark as read
+                      </span>
+                      <span className={styles.moreItem}>
+                        <RemoveFilterIcon className={styles.moreItemIcon}/>
+                        Remove this notification
+                      </span>
+                    </Callout>
+                  : null
+                }
+
+
+
+
+
                 <Separator alignContent="start" style={{fontWeight:"bold"}}>
                   <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
                     Earlier

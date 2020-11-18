@@ -1,16 +1,5 @@
 import { observable, action } from 'mobx';
-
-interface INotification {
-  id: string; //random guid for exmple: 9c3638a3-34bb-41b9-9c25-936d51854331
-  description: string; //text
-  iconUrl?: string; //url
-  icon?: any; //base64
-  date: string; //date time
-  isRead: boolean; //read or unread
-  state: any; // state passed from outside
-  callback?: any; //callback
-}
-
+import { INotification } from '../interfaces/INotification';
 export class NotificationStore {
 
   @observable
@@ -57,8 +46,16 @@ export class NotificationStore {
     }
   ];
 
+  @observable
+  public selectedNotification: INotification | undefined
+
   @action
   public addNotification(notif: INotification) {
     this.notifications.unshift(notif);
+  }
+
+  @action
+  public setSelectedNotification(notif: INotification) {
+    this.selectedNotification = notif;
   }
 }

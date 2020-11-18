@@ -72,6 +72,21 @@
   }
 }
 
+.moreItem {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  font-weight: 600;
+
+  &:hover {
+    background-color: #dae5ee;
+  }
+
+  .moreItemIcon {
+    margin: 5px;
+  }
+}
+
 .moreIcon {
   padding: 5px;
   font-size: 18px;
