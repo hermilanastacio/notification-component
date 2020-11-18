@@ -96,14 +96,14 @@ const NotificationComponent: React.FC = () => {
                       directionalHintFixed
                       setInitialFocus
                     >
+                      <span className={styles.moreItem}>
+                        <AcceptIcon className={styles.moreItemIcon}/>
+                        Mark as read
+                      </span>
                       <span 
                         onClick={handleRemoveNotification}
                         className={styles.moreItem}
                       >
-                        <AcceptIcon className={styles.moreItemIcon}/>
-                        Mark as read
-                      </span>
-                      <span className={styles.moreItem}>
                         <RemoveFilterIcon className={styles.moreItemIcon}/>
                         Remove this notification
                       </span>
