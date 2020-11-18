@@ -83,7 +83,11 @@ const NotificationComponent: React.FC = () => {
                   </span>
                 </Separator>
                   {notificationStore.notifications.map(notif => 
-                    <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
+                    <div
+                      className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
+                      onClick={() => notificationStore.readNotification(notif.id)}
+                      key={notif.id}
+                    >
                       <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
                       <div className={styles.notifDetailsWrapper}>
                         <p className={styles.descText}>

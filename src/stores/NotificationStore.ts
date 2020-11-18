@@ -72,4 +72,10 @@ export class NotificationStore {
   public setSelectedNotification(notif: INotification) {
     this.selectedNotification = notif;
   }
+
+  @action
+  public readNotification(id: string) {
+    let readNotif = this.notifications.filter(n => n.id === id)[0];
+    readNotif.isRead = true;
+  }
 }
