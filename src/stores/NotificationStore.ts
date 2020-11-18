@@ -1,7 +1,9 @@
 import { observable, action } from 'mobx';
 import { INotification } from '../interfaces/INotification';
-export class NotificationStore {
+import { persist } from 'mobx-persist';
 
+export class NotificationStore {
+  @persist('list')
   @observable
   public notifications: Array<INotification> = [
     {
@@ -19,7 +21,7 @@ export class NotificationStore {
       description: "Hermil Anastacio mentioned you in a comment.",
       iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
       icon: null,
-      date: "2020-11-09T03:27:16.321",
+      date: "2020-10-09T03:27:16.321",
       isRead: true,
       state: null,
       callback: null
@@ -29,7 +31,7 @@ export class NotificationStore {
       description: "Hermil Anastacio mentioned you in a comment.",
       iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
       icon: null,
-      date: "2020-11-09T03:27:16.321",
+      date: "2020-09-09T03:27:16.321",
       isRead: false,
       state: null,
       callback: null
@@ -39,7 +41,7 @@ export class NotificationStore {
       description: "Hermil Anastacio mentioned you in a comment.",
       iconUrl: "https://cdn.iconscout.com/icon/free/png-512/overwatch-2-569226.png",
       icon: null,
-      date: "2020-11-09T03:27:16.321",
+      date: "2020-07-09T03:27:16.321",
       isRead: true,
       state: null,
       callback: null
