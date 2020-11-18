@@ -97,30 +97,29 @@ const NotificationComponent: React.FC = () => {
                     New
                   </span>
                 </Separator>
-                  {hasNotifications()
-                    ? notificationStore.notifications.map(notif => 
-                      <div
-                        className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
-                        onClick={() => handleReadNotification(notif.id)}
-                        key={notif.id}
-                      >
-                        <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                        <div className={styles.notifDetailsWrapper}>
-                          <p className={styles.descText}>
-                            {notif.description}
-                          </p>
-                          <span className={styles.dateText}>
-                            {moment(notif.date).fromNow()}
-                          </span>
-                        </div>
-                        <MoreIcon 
-                          className={`item-${notif.id} ${styles.moreIcon}`} 
-                          onClick={(e) => handleClickItemMore(e, notif)}
-                        />
+                {hasNotifications()
+                  ? notificationStore.notifications.map(notif => 
+                    <div
+                      className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
+                      onClick={() => handleReadNotification(notif.id)}
+                      key={notif.id}
+                    >
+                      <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                      <div className={styles.notifDetailsWrapper}>
+                        <p className={styles.descText}>
+                          {notif.description}
+                        </p>
+                        <span className={styles.dateText}>
+                          {moment(notif.date).fromNow()}
+                        </span>
                       </div>
-                    ) : <NoNotifications/>
-                  }
-
+                      <MoreIcon 
+                        className={`item-${notif.id} ${styles.moreIcon}`} 
+                        onClick={(e) => handleClickItemMore(e, notif)}
+                      />
+                    </div>
+                  ) : <NoNotifications/>
+                }
                 {showItemMore
                   ? <Callout
                       className={classes.callout}
@@ -151,15 +150,17 @@ const NotificationComponent: React.FC = () => {
                     </Callout>
                   : null
                 }
-
-                
               </PivotItem>
               <PivotItem headerText="Unread">
                 {hasUnreadNotification()
                   ? notificationStore.notifications.map(notif => {
                       if(!notif.isRead) {
                         return(
-                          <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
+                          <div 
+                            className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}
+                            onClick={() => handleReadNotification(notif.id)}
+                            key={notif.id} 
+                          >
                             <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
                             <div className={styles.notifDetailsWrapper}>
                               <p className={styles.descText}>
@@ -180,6 +181,36 @@ const NotificationComponent: React.FC = () => {
                       }
                     }) 
                   : <NoUnreadNotifications/>
+                }
+                {showItemMore
+                  ? <Callout
+                      className={classes.callout}
+                      onDismiss={() => setShowItemMore(false)}
+                      role="alertdialog"
+                      gapSpace={0}
+                      target={`.item-${notificationStore.selectedNotification.id}`}
+                      directionalHint={DirectionalHint.leftCenter}
+                      directionalHintFixed
+                      setInitialFocus
+                    >
+                      <span 
+                        onClick={() => handleReadNotification(
+                          notificationStore.selectedNotification.id
+                        )}
+                        className={styles.moreItem}
+                      >
+                        <AcceptIcon className={styles.moreItemIcon}/>
+                        Mark as read
+                      </span>
+                      <span 
+                        onClick={handleRemoveNotification}
+                        className={styles.moreItem}
+                      >
+                        <RemoveFilterIcon className={styles.moreItemIcon}/>
+                        Remove this notification
+                      </span>
+                    </Callout>
+                  : null
                 }
               </PivotItem>
             </Pivot>
