@@ -22,6 +22,8 @@ const NotificationComponent: React.FC = () => {
   const [showItemMore, setShowItemMore] = useState(false);
   const { notificationStore } = useStore();
 
+  let notifCount = notificationStore.notifications.filter(n => n.isRead === false).length;
+
   const handleClickItemMore = (notif: INotification) => {
     notificationStore.setSelectedNotification(notif);
     setShowItemMore(true);
@@ -34,13 +36,23 @@ const NotificationComponent: React.FC = () => {
     setShowItemMore(false);
   }
 
+  const hasNotification = () => {
+    if(notifCount > 0) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return(
     <div className={styles.container}>
       
       <div className={styles.bellWrapper} onClick={toggleIsCalloutVisible}>
-        <span className={styles.badge}>
-          {notificationStore.notifications.filter(notif => notif.isRead === false).length}
-        </span>
+        {hasNotification() &&
+          <span className={styles.badge}>
+            {notifCount}
+          </span>
+        }
         <RingerSolidIcon style={{fontSize:25}} className="bellBtn"/>
       </div>
 
