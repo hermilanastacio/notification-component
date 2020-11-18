@@ -21,6 +21,7 @@ const classes = mergeStyleSets({
 const NotificationComponent: React.FC = () => {
   const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(true);
   const [showItemMore, setShowItemMore] = useState(false);
+  const [showNotifContext, setShowNotifContext] = useState(false);
   const { notificationStore } = useStore();
 
   let unreadNotifCount = notificationStore.notifications.filter(n => n.isRead === false).length;
@@ -87,8 +88,35 @@ const NotificationComponent: React.FC = () => {
               <span className={styles.notifLabel}>
                 Notifications
               </span>
-              <MoreIcon className={styles.moreIcon}/>
+              <MoreIcon className={`notif-context ${styles.moreIcon}`} onClick={() => setShowNotifContext(true)}/>
             </div>
+            {showNotifContext &&
+              <Callout
+                className={classes.callout}
+                onDismiss={() => setShowNotifContext(false)}
+                role="alertdialog"
+                gapSpace={0}
+                target={'.notif-context'}
+                directionalHint={DirectionalHint.bottomRightEdge}
+                directionalHintFixed
+                setInitialFocus
+              >
+                <span 
+                  onClick={() => notificationStore.markAllNotificationsAsRead()}
+                  className={styles.moreItem}
+                >
+                  <AcceptIcon className={styles.moreItemIcon}/>
+                  Mark all as read
+                </span>
+                <span 
+                  onClick={() => notificationStore.removeAllReadNotifications()} 
+                  className={styles.moreItem}
+                >
+                  <RemoveFilterIcon className={styles.moreItemIcon}/>
+                  Remove all read
+                </span>
+              </Callout>
+            }
 
             <Pivot className={styles.tabbedContentWrapper}>
               <PivotItem headerText="All">
@@ -120,35 +148,34 @@ const NotificationComponent: React.FC = () => {
                     </div>
                   ) : <NoNotifications/>
                 }
-                {showItemMore
-                  ? <Callout
-                      className={classes.callout}
-                      onDismiss={() => setShowItemMore(false)}
-                      role="alertdialog"
-                      gapSpace={0}
-                      target={`.item-${notificationStore.selectedNotification.id}`}
-                      directionalHint={DirectionalHint.leftCenter}
-                      directionalHintFixed
-                      setInitialFocus
+                {showItemMore &&
+                  <Callout
+                    className={classes.callout}
+                    onDismiss={() => setShowItemMore(false)}
+                    role="alertdialog"
+                    gapSpace={0}
+                    target={`.item-${notificationStore.selectedNotification.id}`}
+                    directionalHint={DirectionalHint.leftCenter}
+                    directionalHintFixed
+                    setInitialFocus
+                  >
+                    <span 
+                      onClick={() => handleReadNotification(
+                        notificationStore.selectedNotification.id
+                      )}
+                      className={styles.moreItem}
                     >
-                      <span 
-                        onClick={() => handleReadNotification(
-                          notificationStore.selectedNotification.id
-                        )}
-                        className={styles.moreItem}
-                      >
-                        <AcceptIcon className={styles.moreItemIcon}/>
-                        Mark as read
-                      </span>
-                      <span 
-                        onClick={handleRemoveNotification}
-                        className={styles.moreItem}
-                      >
-                        <RemoveFilterIcon className={styles.moreItemIcon}/>
-                        Remove this notification
-                      </span>
-                    </Callout>
-                  : null
+                      <AcceptIcon className={styles.moreItemIcon}/>
+                      Mark as read
+                    </span>
+                    <span 
+                      onClick={handleRemoveNotification}
+                      className={styles.moreItem}
+                    >
+                      <RemoveFilterIcon className={styles.moreItemIcon}/>
+                      Remove this notification
+                    </span>
+                  </Callout>
                 }
               </PivotItem>
               <PivotItem headerText="Unread">

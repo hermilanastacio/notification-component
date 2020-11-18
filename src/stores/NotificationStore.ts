@@ -69,6 +69,20 @@ export class NotificationStore {
   }
 
   @action
+  public removeAllReadNotifications() {
+    this.notifications = this.notifications.filter(n => !n.isRead);
+  }
+
+  @action
+  public markAllNotificationsAsRead() {
+    let unreadNotifs = this.notifications.filter(n => !n.isRead);
+
+    unreadNotifs.forEach(n => 
+      n.isRead = true
+    );
+  }
+
+  @action
   public setSelectedNotification(notif: INotification) {
     this.selectedNotification = notif;
   }
