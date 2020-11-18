@@ -47,11 +47,25 @@ export class NotificationStore {
   ];
 
   @observable
-  public selectedNotification: INotification | undefined
+  public selectedNotification: INotification = {
+      id: "",
+      description: "",
+      iconUrl: "",
+      icon: null,
+      date: "",
+      isRead: true,
+      state: null,
+      callback: null
+  }
 
   @action
   public addNotification(notif: INotification) {
     this.notifications.unshift(notif);
+  }
+
+  @action
+  public removeNotification(id: string) {
+    this.notifications = this.notifications.filter(n => n.id !== id);
   }
 
   @action

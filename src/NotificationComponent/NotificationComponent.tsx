@@ -19,12 +19,19 @@ const classes = mergeStyleSets({
 
 const NotificationComponent: React.FC = () => {
   const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(true);
-  const [showMore, setShowMore] = useState(false);
+  const [showItemMore, setShowItemMore] = useState(false);
   const { notificationStore } = useStore();
 
-  const handleClickMore = (notif: INotification) => {
+  const handleClickItemMore = (notif: INotification) => {
     notificationStore.setSelectedNotification(notif);
-    setShowMore(true);
+    setShowItemMore(true);
+  }
+
+  const handleRemoveNotification = () => {
+    notificationStore.removeNotification(
+      notificationStore.selectedNotification.id
+    );
+    setShowItemMore(false);
   }
 
   return(
@@ -74,23 +81,25 @@ const NotificationComponent: React.FC = () => {
                           {moment(notif.date).fromNow()}
                         </span>
                       </div>
-                      <MoreIcon className={`item-${notif.id}`} onClick={() => handleClickMore(notif)}/>
+                      <MoreIcon className={`item-${notif.id}`} onClick={() => handleClickItemMore(notif)}/>
                     </div>
                   )}
 
-                {showMore
+                {showItemMore
                   ? <Callout
                       className={classes.callout}
-                      onDismiss={() => setShowMore(false)}
+                      onDismiss={() => setShowItemMore(false)}
                       role="alertdialog"
                       gapSpace={0}
-                      target={`.item-${notificationStore.selectedNotification 
-                        && notificationStore.selectedNotification.id}`}
+                      target={`.item-${notificationStore.selectedNotification.id}`}
                       directionalHint={DirectionalHint.leftCenter}
                       directionalHintFixed
                       setInitialFocus
                     >
-                      <span className={styles.moreItem}>
+                      <span 
+                        onClick={handleRemoveNotification}
+                        className={styles.moreItem}
+                      >
                         <AcceptIcon className={styles.moreItemIcon}/>
                         Mark as read
                       </span>
