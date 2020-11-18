@@ -7,6 +7,7 @@ import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import { INotification } from '../interfaces/INotification';
 import styles from './NotificationComponent.module.scss';
 import { useBoolean } from '@uifabric/react-hooks';
+import { NoNotifications, NoUnreadNotifications } from './NoNotifications';
 import { useStore } from '../common/stores';
 import { observer } from 'mobx-react';
 import moment from 'moment';
@@ -22,7 +23,7 @@ const NotificationComponent: React.FC = () => {
   const [showItemMore, setShowItemMore] = useState(false);
   const { notificationStore } = useStore();
 
-  let notifCount = notificationStore.notifications.filter(n => n.isRead === false).length;
+  let unreadNotifCount = notificationStore.notifications.filter(n => n.isRead === false).length;
 
   const handleClickItemMore = (e: any, notif: INotification) => {
     e.stopPropagation();
@@ -42,8 +43,16 @@ const NotificationComponent: React.FC = () => {
     setShowItemMore(false);
   }
 
-  const hasNotification = () => {
-    if(notifCount > 0) {
+  const hasUnreadNotification = () => {
+    if(unreadNotifCount > 0) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const hasNotifications = () => {
+    if(notificationStore.notifications.length > 0) {
       return true
     } else {
       return false
@@ -54,9 +63,9 @@ const NotificationComponent: React.FC = () => {
     <div className={styles.container}>
       
       <div className={styles.bellWrapper} onClick={toggleIsCalloutVisible}>
-        {hasNotification() &&
+        {hasUnreadNotification() &&
           <span className={styles.badge}>
-            {notifCount}
+            {unreadNotifCount}
           </span>
         }
         <RingerSolidIcon style={{fontSize:25}} className="bellBtn"/>
@@ -88,27 +97,29 @@ const NotificationComponent: React.FC = () => {
                     New
                   </span>
                 </Separator>
-                  {notificationStore.notifications.map(notif => 
-                    <div
-                      className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
-                      onClick={() => handleReadNotification(notif.id)}
-                      key={notif.id}
-                    >
-                      <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                      <div className={styles.notifDetailsWrapper}>
-                        <p className={styles.descText}>
-                          {notif.description}
-                        </p>
-                        <span className={styles.dateText}>
-                          {moment(notif.date).fromNow()}
-                        </span>
+                  {hasNotifications()
+                    ? notificationStore.notifications.map(notif => 
+                      <div
+                        className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
+                        onClick={() => handleReadNotification(notif.id)}
+                        key={notif.id}
+                      >
+                        <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                        <div className={styles.notifDetailsWrapper}>
+                          <p className={styles.descText}>
+                            {notif.description}
+                          </p>
+                          <span className={styles.dateText}>
+                            {moment(notif.date).fromNow()}
+                          </span>
+                        </div>
+                        <MoreIcon 
+                          className={`item-${notif.id} ${styles.moreIcon}`} 
+                          onClick={(e) => handleClickItemMore(e, notif)}
+                        />
                       </div>
-                      <MoreIcon 
-                        className={`item-${notif.id} ${styles.moreIcon}`} 
-                        onClick={(e) => handleClickItemMore(e, notif)}
-                      />
-                    </div>
-                  )}
+                    ) : <NoNotifications/>
+                  }
 
                 {showItemMore
                   ? <Callout
@@ -141,51 +152,35 @@ const NotificationComponent: React.FC = () => {
                   : null
                 }
 
-
-
-
-
-                <Separator alignContent="start" style={{fontWeight:"bold"}}>
-                  <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
-                    Earlier
-                  </span>
-                </Separator>
-                  {notificationStore.notifications.map(notif => 
-                    <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
-                      <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                      <div className={styles.notifDetailsWrapper}>
-                        <p className={styles.descText}>
-                          {notif.description}
-                        </p>
-                        <span className={styles.dateText}>
-                          {moment(notif.date).fromNow()}
-                        </span>
-                      </div>
-                      <MoreIcon className={styles.moreIcon}/>
-                    </div>
-                  )}
+                
               </PivotItem>
               <PivotItem headerText="Unread">
-                {notificationStore.notifications.map(notif => {
-                  if(!notif.isRead) {
-                    return(
-                      <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
-                        <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                        <div className={styles.notifDetailsWrapper}>
-                          <p className={styles.descText}>
-                            {notif.description}
-                          </p>
-                          <span className={styles.dateText}>
-                            {moment(notif.date).fromNow()}
-                          </span>
-                        </div>
-                        <MoreIcon className={styles.moreIcon}/>
-                      </div>
-                    );
-                  } else {
-                    return null
-                  }
-                })}
+                {hasUnreadNotification()
+                  ? notificationStore.notifications.map(notif => {
+                      if(!notif.isRead) {
+                        return(
+                          <div key={notif.id} className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}>
+                            <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                            <div className={styles.notifDetailsWrapper}>
+                              <p className={styles.descText}>
+                                {notif.description}
+                              </p>
+                              <span className={styles.dateText}>
+                                {moment(notif.date).fromNow()}
+                              </span>
+                            </div>
+                            <MoreIcon 
+                              className={`item-${notif.id} ${styles.moreIcon}`} 
+                              onClick={(e) => handleClickItemMore(e, notif)}
+                            />
+                          </div>
+                        );
+                      } else {
+                        return null
+                      }
+                    }) 
+                  : <NoUnreadNotifications/>
+                }
               </PivotItem>
             </Pivot>
 
