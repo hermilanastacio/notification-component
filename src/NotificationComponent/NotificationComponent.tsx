@@ -24,7 +24,8 @@ const NotificationComponent: React.FC = () => {
 
   let notifCount = notificationStore.notifications.filter(n => n.isRead === false).length;
 
-  const handleClickItemMore = (notif: INotification) => {
+  const handleClickItemMore = (e: any, notif: INotification) => {
+    e.stopPropagation();
     notificationStore.setSelectedNotification(notif);
     setShowItemMore(true);
   }
@@ -33,6 +34,11 @@ const NotificationComponent: React.FC = () => {
     notificationStore.removeNotification(
       notificationStore.selectedNotification.id
     );
+    setShowItemMore(false);
+  }
+
+  const handleReadNotification = (id: string) => {
+    notificationStore.readNotification(id);
     setShowItemMore(false);
   }
 
@@ -85,7 +91,7 @@ const NotificationComponent: React.FC = () => {
                   {notificationStore.notifications.map(notif => 
                     <div
                       className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
-                      onClick={() => notificationStore.readNotification(notif.id)}
+                      onClick={() => handleReadNotification(notif.id)}
                       key={notif.id}
                     >
                       <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
@@ -97,7 +103,10 @@ const NotificationComponent: React.FC = () => {
                           {moment(notif.date).fromNow()}
                         </span>
                       </div>
-                      <MoreIcon className={`item-${notif.id}`} onClick={() => handleClickItemMore(notif)}/>
+                      <MoreIcon 
+                        className={`item-${notif.id} ${styles.moreIcon}`} 
+                        onClick={(e) => handleClickItemMore(e, notif)}
+                      />
                     </div>
                   )}
 
@@ -112,7 +121,12 @@ const NotificationComponent: React.FC = () => {
                       directionalHintFixed
                       setInitialFocus
                     >
-                      <span className={styles.moreItem}>
+                      <span 
+                        onClick={() => handleReadNotification(
+                          notificationStore.selectedNotification.id
+                        )}
+                        className={styles.moreItem}
+                      >
                         <AcceptIcon className={styles.moreItemIcon}/>
                         Mark as read
                       </span>
