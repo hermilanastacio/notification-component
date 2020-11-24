@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import { RingerSolidIcon, MoreIcon, AcceptIcon, RemoveFilterIcon } from '@fluentui/react-icons';
 import { Callout, mergeStyleSets, DirectionalHint, Separator } from 'office-ui-fabric-react';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
@@ -81,7 +81,7 @@ const NotificationComponent: React.FC = () => {
         <RingerSolidIcon style={{fontSize:25}} className="bellBtn"/>
       </div>
 
-      <React.Fragment>
+      <Fragment>
         {isCalloutVisible && (
           <Callout
             className={classes.callout}
@@ -130,9 +130,9 @@ const NotificationComponent: React.FC = () => {
             <Pivot className={styles.tabbedContentWrapper}>
               <PivotItem headerText="All">
                 {hasNotifications()
-                  ? <React.Fragment>
+                  ? <Fragment>
                       {newNotifications && newNotifications.length > 0 &&
-                        <React.Fragment>
+                        <Fragment>
                           <Separator alignContent="start" style={{fontWeight:"bold"}}>
                             <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
                               New
@@ -159,10 +159,10 @@ const NotificationComponent: React.FC = () => {
                               />
                             </div>
                           )}
-                        </React.Fragment>
+                        </Fragment>
                       }
                       {earlierNorifications && earlierNorifications.length > 0 &&
-                        <React.Fragment>
+                        <Fragment>
                           <Separator alignContent="start" style={{fontWeight:"bold"}}>
                             <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
                               Earlier
@@ -189,9 +189,9 @@ const NotificationComponent: React.FC = () => {
                               />
                             </div>
                           )}
-                        </React.Fragment>
+                        </Fragment>
                       }
-                    </React.Fragment>
+                    </Fragment>
                   : <NoNotifications/>
                 }
                 {showItemMore &&
@@ -237,9 +237,9 @@ const NotificationComponent: React.FC = () => {
               </PivotItem>
               <PivotItem headerText="Unread">
                 {hasUnreadNotification()
-                  ? <React.Fragment>
+                  ? <Fragment>
                       {newNotifications && newNotifications.filter(n => !n.isRead).length > 0 &&
-                        <React.Fragment>
+                        <Fragment>
                           <Separator alignContent="start" style={{fontWeight:"bold"}}>
                             <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
                               New
@@ -272,10 +272,10 @@ const NotificationComponent: React.FC = () => {
                               return null
                             }
                           })}
-                        </React.Fragment>
+                        </Fragment>
                       }
                       {earlierNorifications && earlierNorifications.filter(n => !n.isRead).length > 0 &&
-                        <React.Fragment>
+                        <Fragment>
                           <Separator alignContent="start" style={{fontWeight:"bold"}}>
                             <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
                               Earlier
@@ -308,9 +308,9 @@ const NotificationComponent: React.FC = () => {
                               return null
                             }
                           })}
-                        </React.Fragment>
+                        </Fragment>
                       }
-                    </React.Fragment>
+                    </Fragment>
                   : <NoUnreadNotifications/>
                 }
                 {showItemMore
@@ -348,7 +348,7 @@ const NotificationComponent: React.FC = () => {
 
           </Callout>
         )}
-      </React.Fragment>
+      </Fragment>
     </div>
   );
 };
