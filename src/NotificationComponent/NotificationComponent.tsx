@@ -14,7 +14,8 @@ import moment from 'moment';
 
 const classes = mergeStyleSets({
   callout: {
-    maxWidth: 360
+    maxWidth: 360,  
+    minWidth: 300
   }
 });
 
@@ -26,7 +27,7 @@ const NotificationComponent: React.FC = () => {
 
   let unreadNotifCount = notificationStore.notifications.filter(n => n.isRead === false).length;
 
-  let newNorifications = notificationStore.notifications.filter(n => moment(n.date).isSame(moment(), 'day'));
+  let newNotifications = notificationStore.notifications.filter(n => moment(n.date).isSame(moment(), 'day'));
   let earlierNorifications = notificationStore.notifications.filter(n => !moment(n.date).isSame(moment(), 'day'));
 
   const handleClickItemMore = (e: any, notif: INotification) => {
@@ -128,61 +129,70 @@ const NotificationComponent: React.FC = () => {
 
             <Pivot className={styles.tabbedContentWrapper}>
               <PivotItem headerText="All">
-                <Separator alignContent="start" style={{fontWeight:"bold"}}>
-                  <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
-                    New
-                  </span>
-                </Separator>
                 {hasNotifications()
-                  ? newNorifications.map(notif => 
-                    <div
-                      className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
-                      onClick={() => handleReadNotification(notif.id)}
-                      key={notif.id}
-                    >
-                      <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                      <div className={styles.notifDetailsWrapper}>
-                        <p className={styles.descText}>
-                          {notif.description}
-                        </p>
-                        <span className={styles.dateText}>
-                          {moment(notif.date).fromNow()}
-                        </span>
-                      </div>
-                      <MoreIcon 
-                        className={`item-${notif.id} ${styles.moreIcon}`} 
-                        onClick={(e) => handleClickItemMore(e, notif)}
-                      />
-                    </div>
-                  ) : <NoNotifications/>
-                }
-                <Separator alignContent="start" style={{fontWeight:"bold"}}>
-                  <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
-                    Earlier
-                  </span>
-                </Separator>
-                {hasNotifications()
-                  ? earlierNorifications.map(notif => 
-                    <div
-                      className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
-                      onClick={() => handleReadNotification(notif.id)}
-                      key={notif.id}
-                    >
-                      <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                      <div className={styles.notifDetailsWrapper}>
-                        <p className={styles.descText}>
-                          {notif.description}
-                        </p>
-                        <span className={styles.dateText}>
-                          {moment(notif.date).fromNow()}
-                        </span>
-                      </div>
-                      <MoreIcon 
-                        className={`item-${notif.id} ${styles.moreIcon}`} 
-                        onClick={(e) => handleClickItemMore(e, notif)}
-                      />
-                    </div>
-                  ) : <NoNotifications/>
+                  ? <React.Fragment>
+                      {newNotifications && newNotifications.length > 0 &&
+                        <React.Fragment>
+                          <Separator alignContent="start" style={{fontWeight:"bold"}}>
+                            <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
+                              New
+                            </span>
+                          </Separator>
+                          {newNotifications.map(notif =>
+                            <div
+                              className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
+                              onClick={() => handleReadNotification(notif.id)}
+                              key={notif.id}
+                            >
+                              <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                              <div className={styles.notifDetailsWrapper}>
+                                <p className={styles.descText}>
+                                  {notif.description}
+                                </p>
+                                <span className={styles.dateText}>
+                                  {moment(notif.date).fromNow()}
+                                </span>
+                              </div>
+                              <MoreIcon 
+                                className={`item-${notif.id} ${styles.moreIcon}`} 
+                                onClick={(e) => handleClickItemMore(e, notif)}
+                              />
+                            </div>
+                          )}
+                        </React.Fragment>
+                      }
+                      {earlierNorifications && earlierNorifications.length > 0 &&
+                        <React.Fragment>
+                          <Separator alignContent="start" style={{fontWeight:"bold"}}>
+                            <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
+                              Earlier
+                            </span>
+                          </Separator>
+                          {earlierNorifications.map(notif => 
+                            <div
+                              className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`} 
+                              onClick={() => handleReadNotification(notif.id)}
+                              key={notif.id}
+                            >
+                              <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                              <div className={styles.notifDetailsWrapper}>
+                                <p className={styles.descText}>
+                                  {notif.description}
+                                </p>
+                                <span className={styles.dateText}>
+                                  {moment(notif.date).fromNow()}
+                                </span>
+                              </div>
+                              <MoreIcon 
+                                className={`item-${notif.id} ${styles.moreIcon}`} 
+                                onClick={(e) => handleClickItemMore(e, notif)}
+                              />
+                            </div>
+                          )}
+                        </React.Fragment>
+                      }
+                    </React.Fragment>
+                  : <NoNotifications/>
                 }
                 {showItemMore &&
                   <Callout
@@ -226,74 +236,81 @@ const NotificationComponent: React.FC = () => {
                 }
               </PivotItem>
               <PivotItem headerText="Unread">
-                <Separator alignContent="start" style={{fontWeight:"bold"}}>
-                  <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
-                    New
-                  </span>
-                </Separator>
                 {hasUnreadNotification()
-                  ? newNorifications.map(notif => {
-                      if(!notif.isRead) {
-                        return(
-                          <div 
-                            className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}
-                            onClick={() => handleReadNotification(notif.id)}
-                            key={notif.id} 
-                          >
-                            <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                            <div className={styles.notifDetailsWrapper}>
-                              <p className={styles.descText}>
-                                {notif.description}
-                              </p>
-                              <span className={styles.dateText}>
-                                {moment(notif.date).fromNow()}
-                              </span>
-                            </div>
-                            <MoreIcon 
-                              className={`item-${notif.id} ${styles.moreIcon}`} 
-                              onClick={(e) => handleClickItemMore(e, notif)}
-                            />
-                          </div>
-                        );
-                      } else {
-                        return null
+                  ? <React.Fragment>
+                      {newNotifications && newNotifications.filter(n => !n.isRead).length > 0 &&
+                        <React.Fragment>
+                          <Separator alignContent="start" style={{fontWeight:"bold"}}>
+                            <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
+                              New
+                            </span>
+                          </Separator>
+                          {newNotifications.map(notif => {
+                            if(!notif.isRead) {
+                              return(
+                                <div 
+                                  className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}
+                                  onClick={() => handleReadNotification(notif.id)}
+                                  key={notif.id} 
+                                >
+                                  <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                                  <div className={styles.notifDetailsWrapper}>
+                                    <p className={styles.descText}>
+                                      {notif.description}
+                                    </p>
+                                    <span className={styles.dateText}>
+                                      {moment(notif.date).fromNow()}
+                                    </span>
+                                  </div>
+                                  <MoreIcon 
+                                    className={`item-${notif.id} ${styles.moreIcon}`} 
+                                    onClick={(e) => handleClickItemMore(e, notif)}
+                                  />
+                                </div>
+                              );
+                            } else {
+                              return null
+                            }
+                          })}
+                        </React.Fragment>
                       }
-                    }) 
-                  : <NoUnreadNotifications/>
-                }
-                <Separator alignContent="start" style={{fontWeight:"bold"}}>
-                  <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
-                    Earlier
-                  </span>
-                </Separator>
-                {hasUnreadNotification()
-                  ? earlierNorifications.map(notif => {
-                      if(!notif.isRead) {
-                        return(
-                          <div 
-                            className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}
-                            onClick={() => handleReadNotification(notif.id)}
-                            key={notif.id} 
-                          >
-                            <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
-                            <div className={styles.notifDetailsWrapper}>
-                              <p className={styles.descText}>
-                                {notif.description}
-                              </p>
-                              <span className={styles.dateText}>
-                                {moment(notif.date).fromNow()}
-                              </span>
-                            </div>
-                            <MoreIcon 
-                              className={`item-${notif.id} ${styles.moreIcon}`} 
-                              onClick={(e) => handleClickItemMore(e, notif)}
-                            />
-                          </div>
-                        );
-                      } else {
-                        return null
+                      {earlierNorifications && earlierNorifications.filter(n => !n.isRead).length > 0 &&
+                        <React.Fragment>
+                          <Separator alignContent="start" style={{fontWeight:"bold"}}>
+                            <span style={{fontWeight:"bold", color:"#7f7f7f"}}>
+                              Earlier
+                            </span>
+                          </Separator>
+                          {earlierNorifications.map(notif => {
+                            if(!notif.isRead) {
+                              return(
+                                <div 
+                                  className={`${styles.notificationCard} ${!notif.isRead ? styles.unRead : ''}`}
+                                  onClick={() => handleReadNotification(notif.id)}
+                                  key={notif.id} 
+                                >
+                                  <img src={notif.iconUrl} alt="icon" className={styles.iconImg}/>
+                                  <div className={styles.notifDetailsWrapper}>
+                                    <p className={styles.descText}>
+                                      {notif.description}
+                                    </p>
+                                    <span className={styles.dateText}>
+                                      {moment(notif.date).fromNow()}
+                                    </span>
+                                  </div>
+                                  <MoreIcon 
+                                    className={`item-${notif.id} ${styles.moreIcon}`} 
+                                    onClick={(e) => handleClickItemMore(e, notif)}
+                                  />
+                                </div>
+                              );
+                            } else {
+                              return null
+                            }
+                          })}
+                        </React.Fragment>
                       }
-                    }) 
+                    </React.Fragment>
                   : <NoUnreadNotifications/>
                 }
                 {showItemMore
